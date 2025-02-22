@@ -1,24 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Landing Page</title>
-        <script>
-        (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="GM_y1eB0lPecqWhvpER9z";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
-        </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>London Cookie Company</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Landing Page</h1>
-    </header>
-    <main>
-        <h2>About Us</h2>
-        <p>We are excited to have you here. Learn more about our services and offerings.</p>
-    </main>
-    <footer>
-        <p>&copy; 2025  Company Name. All rights reserved.</p>
-    </footer>
+
+  <header>
+    <div class="container">
+      <h1>London Cookie Company</h1>
+      <button class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <nav class="nav-menu">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Cookies</a></li>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="hero">
+    <div class="container">
+      <h2>Freshly Baked Cookies, Delivered to Your Door</h2>
+      <p>Indulge in our delicious, handcrafted cookies made with the finest ingredients. Order now and experience the taste of London!</p>
+      <a href="#" class="button">Order Now</a>
+    </div>
+  </section>
+
+  <section id="featured-cookies">
+    <div class="container">
+      <h2>Our Featured Cookies</h2>
+      <div class="cookie-grid">
+        <div class="cookie-item">
+          <img src="https://th.bing.com/th/id/OIP.x7R6pgnkLSvZ4Vfyabm8oAHaFu?rs=1&pid=ImgDetMain" alt="Chocolate Chip Cookie">
+          <h3>Chocolate Chip</h3>
+          <p>The classic favorite. Chewy, gooey, and loaded with chocolate chips.</p>
+        </div>
+        <div class="cookie-item">
+          <img src="https://tse1.mm.bing.net/th?q=recipe%20for%20oatmeal%20raisin%20cookie&w=1280&h=760&c=5&rs=1&p=0" alt="Oatmeal Raisin Cookie">
+          <h3>Oatmeal Raisin</h3>
+          <p>A wholesome treat. Soft oatmeal with plump, juicy raisins.</p>
+        </div>
+        <div class="cookie-item">
+          <img src="https://th.bing.com/th/id/OIP.jqIVQhJSDm5sJWXQ3Jq7EAHaIz?rs=1&pid=ImgDetMain" alt="Peanut Butter Cookie">
+          <h3>Peanut Butter</h3>
+          <p>Rich and nutty. Made with real peanut butter for a satisfying flavor.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>© 2024 London Cookie Company. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script src="newchatbot.js"></script>
 </body>
 </html>
