@@ -1,11 +1,16 @@
 (() => {
     // Configuration object with default values
+
     const config = {
-        botName: 'Nexus Bot',
-        themeColor: '#5a5a5a',
-        poweredByLink: 'https://nexus-botix.com',
-        botAvatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='5' r='2'/%3E%3Cpath d='M2 19c0 1.1 .9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12z'/%3E%3C/svg%3E"
-    };
+      botName: 'AI Assistant',
+      themeColor: '#5a5a5a',
+      botAvatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-bot'%3E%3Cpath d='M12 8V4H8'/%3E%3Crect width='16' height='12' x='4' y='8' rx='2'/%3E%3Cpath d='M2 14h2'/%3E%3Cpath d='M20 14h2'/%3E%3Cpath d='M15 13v2'/%3E%3Cpath d='M9 13v2'/%3E%3C/svg%3E"
+  };
+
+  // Override default config with values from global chatbotConfig (if defined)
+  if (typeof chatbotConfig !== 'undefined') {
+      Object.assign(config, chatbotConfig);
+  }
 
     // Create and inject CSS
     const style = document.createElement('style');
@@ -58,15 +63,6 @@
         gap: 10px;
         position: relative; /* For absolute positioning of image */
       }
-
-        .chatbot-header::before {
-          content: url('${config.botAvatar}');
-          display: inline-block;
-          vertical-align: middle;
-          width: 24px;
-          height: 24px;
-          margin-right: 8px;
-        }
 
         /* Styling for the initial bot message/image */
         .initial-message {
@@ -283,7 +279,7 @@
 
     const poweredBy = document.createElement('div');
     poweredBy.className = 'powered-by';
-    poweredBy.innerHTML = `Powered by <a href="${config.poweredByLink}" target="_blank">Nexus Botix</a>`;
+    poweredBy.innerHTML = `Powered by <a href="https://nexus-botix.com" target="_blank">Nexus Botix</a>`;
 
     // Assemble the components
     inputArea.appendChild(input);
