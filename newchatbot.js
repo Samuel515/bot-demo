@@ -13,7 +13,7 @@
     Object.assign(config, chatbotConfig);
   }
 
-  const scriptTag = document.querySelector('script[src="https://cdn.jsdelivr.net/gh/Samuel515/bot-demo@latest/newchatbot.js"]');
+  const scriptTag = document.querySelector('script[src="https://raw.githack.com/Samuel515/bot-demo/main/newchatbot.js"]');
   const scriptId = scriptTag?.getAttribute('data-script-id');
   const xApiKey = scriptTag?.getAttribute('data-x-api-key');
 
