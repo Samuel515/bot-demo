@@ -4,24 +4,33 @@ document.addEventListener('DOMContentLoaded', () => {
     botName: "AI Assistant",
     themeColor: "#5a5a5a",
     botAvatar:
-      "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='lucide lucide-bot'%3E%3Cpath d='M12 8V4H8'/%3E%3Crect width='16' height='12' x='4' y='8' rx='2'/%3E%3Cpath d='M2 14h2'/%3E%3Cpath d='M20 14h2'/%3E%3Cpath d='M15 13v2'/%3E%3Cpath d='M9 13v2'/%3E%3C/svg%3E",
+      "data:image/svg+xml,%3Csvg width%3D%2240%22 height%3D%2240%22 viewBox%3D%220 0 32 32%22 fill%3D%22none%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath d%3D%22M25.3327 21.3334V18.6667C25.3327 14.8955 25.3327 13.0099 24.1611 11.8383C22.9895 10.6667 21.1039 10.6667 17.3327 10.6667H14.666C10.8948 10.6667 9.00916 10.6667 7.83759 11.8383C6.66602 13.0099 6.66602 14.8955 6.66602 18.6667V21.3334C6.66602 25.1046 6.66602 26.9902 7.83759 28.1618C9.00916 29.3334 10.8948 29.3334 14.666 29.3334H17.3327C21.1039 29.3334 22.9895 29.3334 24.1611 28.1618C25.3327 26.9902 25.3327 25.1046 25.3327 21.3334Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M25.334 24C27.2196 24 28.1624 24 28.7483 23.4143C29.334 22.8284 29.334 21.8856 29.334 20C29.334 18.1144 29.334 17.1716 28.7483 16.5857C28.1624 16 27.2196 16 25.334 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M6.66602 24C4.7804 24 3.83759 24 3.2518 23.4143C2.66602 22.8284 2.66602 21.8856 2.66602 20C2.66602 18.1144 2.66602 17.1716 3.2518 16.5857C3.83759 16 4.7804 16 6.66602 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M18 4.66675C18 5.77132 17.1045 6.66675 16 6.66675C14.8955 6.66675 14 5.77132 14 4.66675C14 3.56217 14.8955 2.66675 16 2.66675C17.1045 2.66675 18 3.56217 18 4.66675Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22%2F%3E%0A%3Cpath d%3D%22M16 6.66675V10.6667%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M12 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M20 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M13.334 23.3333C13.334 23.3333 14.2229 23.9999 16.0007 23.9999C17.7784 23.9999 18.6673 23.3333 18.6673 23.3333%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E",
     welcomeMessage: "Hi, how can I help you today?",
   };
 
-  // Override default config with values from global chatbotConfig (if defined)
+  const scriptTag = document.querySelector('script[data-script-id][data-x-api-key]');
+  if (!scriptTag) {
+    console.error("Chatbot Error: Script tag not found.");
+    return;
+  }
+
+  const scriptId = scriptTag.getAttribute('data-script-id');
+  const xApiKey = scriptTag.getAttribute('data-x-api-key');
+  const botName = scriptTag.getAttribute('data-bot-name');
+
+  if (!scriptId || !xApiKey) {
+    console.error("Chatbot Error: Missing required data attributes (script-id or x-api-key).");
+    return;
+  }
+
+  if (botName) {
+    config.botName = botName;
+  }
+
   if (typeof chatbotConfig !== "undefined") {
     Object.assign(config, chatbotConfig);
   }
 
-  const scriptTag = document.querySelector('script[data-script-id][data-x-api-key]');
-  const scriptId = scriptTag?.getAttribute('data-script-id');
-  const xApiKey = scriptTag?.getAttribute('data-x-api-key');
-
-  if (!scriptId || !xApiKey) {
-    console.error("Chatbot Error: Missing required data attributes in script tag.");
-  }
-
-  // Create and inject CSS
   const style = document.createElement("style");
   style.textContent = `
     .chatbot-container {
@@ -169,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
         gap: 8px;
     }
 
-    input{
+    input {
         color: #111;
     }
 
@@ -273,8 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load Figtree font
   const fontLink = document.createElement("link");
-  fontLink.href =
-    "https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&display=swap";
+  fontLink.href = "https://fonts.googleapis.com/css2?family=Figtree:wght@400;600&display=swap";
   fontLink.rel = "stylesheet";
   document.head.appendChild(fontLink);
 
@@ -290,14 +298,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const header = document.createElement("div");
   header.className = "chatbot-header";
 
-  // Add bot name and avatar
   const botInfo = document.createElement("div");
   botInfo.style.display = "flex";
   botInfo.style.alignItems = "center";
   botInfo.style.gap = "5px";
   botInfo.innerHTML = `<img style="width: 24px; height: 24px;" src="${config.botAvatar}"> ${config.botName}`;
 
-  // Add refresh button
   const refreshButton = document.createElement("button");
   refreshButton.className = "refresh-button";
   refreshButton.innerHTML = `
@@ -315,14 +321,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const messagesContainer = document.createElement("div");
   messagesContainer.className = "chatbot-messages";
 
-  // Create initial message element
   const initialMessage = document.createElement("div");
   initialMessage.className = "initial-message";
   initialMessage.innerHTML = `
       <img src="${config.botAvatar}" alt="Bot Avatar" style="width: 50px; height: 50px; margin-bottom: 5px;">
       <span>${config.welcomeMessage}</span>`;
 
-  // Add initial message to messages container
   messagesContainer.appendChild(initialMessage);
 
   const inputArea = document.createElement("div");
@@ -349,7 +353,6 @@ document.addEventListener('DOMContentLoaded', () => {
   poweredBy.className = "powered-by";
   poweredBy.innerHTML = `Powered by <a href="https://nexusbotix.io" target="_blank">Nexus Botix</a>`;
 
-  // Assemble the components
   inputArea.appendChild(input);
   inputArea.appendChild(sendButton);
 
@@ -363,11 +366,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.body.appendChild(container);
 
-  // Chat functionality
   let isOpen = false;
   const CHAT_HISTORY_KEY = "chatbotHistory";
 
-  // Load Marked.js
   const markedScript = document.createElement("script");
   markedScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
   markedScript.onload = () => {
@@ -389,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function clearChat() {
       localStorage.removeItem(CHAT_HISTORY_KEY);
       messagesContainer.innerHTML = "";
-      // Re-add the initial message
       const newInitialMessage = document.createElement("div");
       newInitialMessage.className = "initial-message";
       newInitialMessage.innerHTML = `
@@ -418,14 +418,12 @@ document.addEventListener('DOMContentLoaded', () => {
       messagesContainer.appendChild(message);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-      // Store the message in local storage
       const newMessage = {
         text: text,
         sender: sender,
       };
 
-      let chatHistory =
-        JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
+      let chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
       chatHistory.push(newMessage);
       localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory));
 
@@ -456,7 +454,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const typingIndicator = showTypingIndicator();
 
-      // Check configuration early
       if (!scriptId || !xApiKey) {
         typingIndicator.remove();
         addMessage("Error: Chatbot is not properly configured.", "bot");
@@ -519,7 +516,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
-    // Event listeners
     toggleButton.addEventListener("click", () => {
       isOpen = !isOpen;
       chatWindow.classList.toggle("open");
@@ -546,6 +542,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.innerWidth >= 768) {
       focusInput();
     }
+  };
+  
+  markedScript.onerror = () => {
+    console.error("Error loading Marked.js. Chatbot functionality may be limited.");
   };
 
   document.head.appendChild(markedScript);
