@@ -1,4 +1,4 @@
-(() => {
+document.addEventListener('DOMContentLoaded', () => {
   // Configuration object with default values
   const config = {
     botName: "AI Assistant",
