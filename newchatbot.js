@@ -17,7 +17,6 @@
   const scriptId = scriptTag?.getAttribute('data-script-id');
   const xApiKey = scriptTag?.getAttribute('data-x-api-key');
 
-  // Validate the data
   if (!scriptId || !xApiKey) {
     console.error("Chatbot Error: Missing required data attributes in script tag.");
   }
