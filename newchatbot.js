@@ -128,7 +128,8 @@
 
     .message {
         max-width: 80%;
-        padding: 10px 15px;
+        min-width: 25%;
+        padding: 10px 15px 15px 10px;
         border-radius: 3px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         font-size: 12px;
@@ -136,8 +137,7 @@
         position: relative;
         margin-bottom: 20px;
         display: flex;
-        align-items: baseline;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 5px;
     }
 
@@ -145,21 +145,20 @@
         margin-left: auto;
         background-color: #333;
         color: #fff;
-        justify-content: flex-end;
     }
 
     .message.bot {
         margin-right: auto;
         background-color: #f0f0f0;
         color: #333;
-        justify-content: flex-start;
     }
 
     .message .timestamp {
         font-size: 0.7em;
-        margin-top: auto;
         color: #777;
-        margin-left: auto;
+        position: absolute;
+        bottom: 2px;
+        right: 5px;
         white-space: nowrap;
     }
 
