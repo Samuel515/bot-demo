@@ -128,7 +128,7 @@
 
     .message {
         max-width: 80%;
-        min-width: 25%;
+        min-width: 20%;
         padding: 10px 15px 15px 10px;
         border-radius: 3px;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
