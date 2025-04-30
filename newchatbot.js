@@ -25,11 +25,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   if (botName) {
-    console.log("Using Bot Name:", botName);
     config.botName = botName;
   }
   if (llmProvider) {
-    console.log("Using LLM Provider:", llmProvider);
     config.llmProvider = llmProvider;
   }
 
