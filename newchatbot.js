@@ -17,14 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const scriptId = scriptTag.getAttribute('data-script-id');
   const xApiKey = scriptTag.getAttribute('data-x-api-key');
   const botName = scriptTag.getAttribute('data-bot-name');
-
+  const llmProvider = scriptTag.getAttribute('data-llm-provider');
+  
   if (!scriptId || !xApiKey) {
     console.error("Chatbot Error: Missing required data attributes (script-id or x-api-key).");
     return;
   }
 
   if (botName) {
+    console.log("Using Bot Name:", botName);
     config.botName = botName;
+  }
+  if (llmProvider) {
+    console.log("Using LLM Provider:", llmProvider);
+    config.llmProvider = llmProvider;
   }
 
   if (typeof chatbotConfig !== "undefined") {
