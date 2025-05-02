@@ -376,13 +376,93 @@ document.addEventListener('DOMContentLoaded', () => {
   const markedScript = document.createElement("script");
   markedScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
   markedScript.onload = () => {
+    function typeMessage(element, text, callback) {
+      const tempContainer = document.createElement('div');
+      tempContainer.innerHTML = text;
+      
+      const contentParts = extractContentParts(tempContainer);
+      
+      let currentPartIndex = 0;
+      let currentCharIndex = 0;
+      let activePart = contentParts[currentPartIndex];
+      
+      function typeNextPart() {
+        if (currentPartIndex >= contentParts.length) {
+          if (callback) callback();
+          return;
+        }
+        
+        const part = contentParts[currentPartIndex];
+        
+        if (part.type === 'tag') {
+          element.innerHTML = element.innerHTML + part.content;
+          currentPartIndex++;
+          
+          setTimeout(typeNextPart, 0);
+        } else if (part.type === 'text') {
+          if (currentCharIndex < part.content.length) {
+            element.innerHTML = element.innerHTML + part.content.charAt(currentCharIndex);
+            currentCharIndex++;
+            
+            const typingSpeed = Math.floor(Math.random() * 20) + 20;
+            setTimeout(typeNextPart, typingSpeed);
+          } else {
+            currentPartIndex++;
+            currentCharIndex = 0;
+            setTimeout(typeNextPart, 0);
+          }
+        }
+      }
+
+      typeNextPart();
+    }
+    
+    function extractContentParts(element) {
+      const parts = [];
+      
+      function processNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          if (node.textContent.trim() !== '') {
+            parts.push({
+              type: 'text',
+              content: node.textContent
+            });
+          }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const outerHTML = node.outerHTML;
+          const innerHTML = node.innerHTML;
+          
+          const openingTag = outerHTML.substring(0, outerHTML.indexOf(innerHTML));
+          parts.push({
+            type: 'tag',
+            content: openingTag
+          });
+          
+          Array.from(node.childNodes).forEach(processNode);
+          
+          const closingTag = outerHTML.substring(outerHTML.indexOf(innerHTML) + innerHTML.length);
+          parts.push({
+            type: 'tag',
+            content: closingTag
+          });
+        }
+      }
+      
+      Array.from(element.childNodes).forEach(processNode);
+      return parts;
+    }
+
     function loadChatHistory() {
       const history = localStorage.getItem(CHAT_HISTORY_KEY);
       if (history) {
         try {
           const parsedHistory = JSON.parse(history);
           parsedHistory.forEach((message) => {
-            addMessage(message.text, message.sender);
+            if (message.sender === "bot") {
+              addMessage(message.text, message.sender, false);
+            } else {
+              addMessage(message.text, message.sender);
+            }
           });
         } catch (error) {
           console.error("Error parsing chat history:", error);
@@ -402,13 +482,12 @@ document.addEventListener('DOMContentLoaded', () => {
       messagesContainer.appendChild(newInitialMessage);
     }
 
-    function addMessage(text, sender) {
+    function addMessage(text, sender, animate = true) {
       const message = document.createElement("div");
       message.className = `message ${sender}`;
 
       const messageText = document.createElement("span");
-      messageText.innerHTML = text;
-
+      
       const timestamp = document.createElement("span");
       timestamp.className = "timestamp";
       timestamp.textContent = new Date().toLocaleTimeString([], {
@@ -418,22 +497,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
       message.appendChild(messageText);
       message.appendChild(timestamp);
-
       messagesContainer.appendChild(message);
+      
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-      const newMessage = {
-        text: text,
-        sender: sender,
-      };
-
-      let chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
-      chatHistory.push(newMessage);
-      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory));
+      if (sender === "bot" && animate) {
+        messageText.innerHTML = "";
+        
+        typeMessage(messageText, text, () => {
+          updateChatHistory(text, sender);
+        });
+      } else {
+        messageText.innerHTML = text;
+        updateChatHistory(text, sender);
+      }
 
       if (window.innerWidth >= 768) {
         focusInput();
       }
+    }
+    
+    function updateChatHistory(text, sender) {
+      let chatHistory = JSON.parse(localStorage.getItem(CHAT_HISTORY_KEY)) || [];
+      chatHistory.push({
+        text: text,
+        sender: sender,
+      });
+      localStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(chatHistory));
     }
 
     function showTypingIndicator() {
@@ -502,7 +592,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (botResponseMarkdown) {
           const botResponseHTML = marked.parse(botResponseMarkdown);
-          addMessage(botResponseHTML, "bot");
+          addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
         } else {
           addMessage("Sorry, I didn't get a response.", "bot");
         }
