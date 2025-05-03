@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const doc = parser.parseFromString(text, 'text/html');
       const nodes = Array.from(doc.body.childNodes);
 
-      // Stack to keep track of open tags and their node indices
+      // Stack to keep track of open tags and their state
       const tagStack = [];
       let currentNodeIndex = 0;
       let currentCharIndex = 0;
@@ -408,7 +408,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Close any remaining open tags
           while (tagStack.length > 0) {
             const tag = tagStack.pop();
-            element.innerHTML += `</${tag.tagName.toLowerCase()}>`;
+            element.innerHTML += `</${tag.toLowerCase()}>`;
           }
           if (callback) callback();
           console.log("Final Rendered HTML:", element.innerHTML); // Debug final HTML
@@ -430,43 +430,29 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
           // Add the opening tag
-          const openingTag = currentNode.outerHTML.match(/<[^>]+>/)[0];
-          element.innerHTML += openingTag;
-          console.log("Adding opening tag:", openingTag);
+          const openingTagMatch = currentNode.outerHTML.match(/<[^>]+>/);
+          if (openingTagMatch) {
+            const openingTag = openingTagMatch[0];
+            element.innerHTML += openingTag;
+            console.log("Adding opening tag:", openingTag);
 
-          // Push the tag onto the stack with its child count
-          tagStack.push({
-            tagName: currentNode.tagName,
-            childCount: currentNode.childNodes.length,
-            childIndex: 0,
-          });
+            // Push the tag name onto the stack
+            tagStack.push(currentNode.tagName);
 
-          // Add child nodes to the processing queue
-          const childNodes = Array.from(currentNode.childNodes);
-          if (childNodes.length > 0) {
-            nodes.splice(currentNodeIndex + 1, 0, ...childNodes);
-          }
-
-          // Check if the current tag has no children
-          if (currentNode.childNodes.length === 0) {
-            const tag = tagStack.pop();
-            element.innerHTML += `</${tag.tagName.toLowerCase()}>`;
-          }
-
-          currentNodeIndex++;
-          currentNode = nodes[currentNodeIndex];
-
-          // Update the parent tag's child index
-          if (tagStack.length > 0) {
-            const parentTag = tagStack[tagStack.length - 1];
-            parentTag.childIndex++;
-            if (parentTag.childIndex >= parentTag.childCount) {
-              const closedTag = tagStack.pop();
-              element.innerHTML += `</${closedTag.tagName.toLowerCase()}>`;
+            // Add child nodes to the processing queue
+            const childNodes = Array.from(currentNode.childNodes);
+            if (childNodes.length > 0) {
+              nodes.splice(currentNodeIndex + 1, 0, ...childNodes);
+            } else {
+              // If no children, close the tag immediately
+              element.innerHTML += `</${currentNode.tagName.toLowerCase()}>`;
+              tagStack.pop();
             }
-          }
 
-          setTimeout(typeNextNode, 0);
+            currentNodeIndex++;
+            currentNode = nodes[currentNodeIndex];
+            setTimeout(typeNextNode, 0);
+          }
         }
       }
 
