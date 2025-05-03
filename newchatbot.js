@@ -282,32 +282,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .powered-by a:hover {
         text-decoration: underline;
     }
-
-    .list-item-container {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 5px;
-    }
-
-    .list-item-text {
-        flex: 1;
-    }
-
-    .list-item-button {
-        background-color: #333;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 12px;
-        transition: background-color 0.2s;
-    }
-
-    .list-item-button:hover {
-        background-color: #555;
-    }
   `;
 
   // Load Figtree font
@@ -565,41 +539,6 @@ document.addEventListener('DOMContentLoaded', () => {
       return indicator;
     }
 
-    function transformListToButtons(htmlContent) {
-      const tempDiv = document.createElement("div");
-      tempDiv.innerHTML = htmlContent;
-
-      const ulElements = tempDiv.querySelectorAll("ul");
-      ulElements.forEach((ul) => {
-        const listItems = ul.querySelectorAll("li");
-        const newContainer = document.createElement("div");
-        listItems.forEach((li) => {
-          const container = document.createElement("div");
-          container.className = "list-item-container";
-
-          const textSpan = document.createElement("span");
-          textSpan.className = "list-item-text";
-          textSpan.textContent = li.textContent;
-
-          const button = document.createElement("button");
-          button.className = "list-item-button";
-          button.textContent = "Select";
-          button.onclick = () => {
-            input.value = textSpan.textContent;
-            handleSendMessage();
-          };
-
-          container.appendChild(textSpan);
-          container.appendChild(button);
-          newContainer.appendChild(container);
-        });
-
-        ul.replaceWith(newContainer);
-      });
-
-      return tempDiv.innerHTML;
-    }
-
     async function handleSendMessage() {
       const text = input.value.trim();
       if (!text) return;
@@ -654,9 +593,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (botResponseMarkdown) {
           // Preprocess the response to convert "•" to "*" for proper Markdown list rendering
           botResponseMarkdown = botResponseMarkdown.replace(/•/g, '*');
-          let botResponseHTML = marked.parse(botResponseMarkdown);
-          // Transform lists into items with buttons
-          botResponseHTML = transformListToButtons(botResponseHTML);
+          const botResponseHTML = marked.parse(botResponseMarkdown);
           addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
         } else {
           addMessage("Sorry, I didn't get a response.", "bot");
