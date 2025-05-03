@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
         bottom: 70px;
         right: 10px;
         width: calc(100% - 20px);
-        min-width: 300px;
+        min-width: 320px;
         max-width: 350px;
         height: 500px;
         background: #fff;
@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spanElement.innerHTML += escapedChar;
           }
           charIndex++;
-          const typingSpeed = Math.floor(Math.random() * 20) + 20;
+          const typingSpeed = Math.floor(Math.random() * 20) + 30;
           if (!isUserScrolledUp && isTyping) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
           }
@@ -595,7 +595,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function preventBackgroundScroll(e) {
-      e.preventDefault();
       e.stopPropagation();
     }
 
@@ -604,8 +603,8 @@ document.addEventListener('DOMContentLoaded', () => {
       isUserScrolledUp = !isAtBottom;
     });
 
-    messagesContainer.addEventListener('wheel', preventBackgroundScroll, { passive: false });
-    messagesContainer.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+    messagesContainer.addEventListener('wheel', preventBackgroundScroll, { passive: true });
+    messagesContainer.addEventListener('touchmove', preventBackgroundScroll, { passive: true });
 
     toggleButton.addEventListener("click", () => {
       isOpen = !isOpen;
