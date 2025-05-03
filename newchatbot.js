@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
         position: absolute;
         bottom: 70px;
         right: 10px;
-        width: 90%;
+        width: calc(100% - 20px);
+        min-width: 300px;
         max-width: 350px;
         height: 500px;
         background: #fff;
@@ -92,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .chatbot-window {
           width: 400px;
           max-width: 400px;
+          min-width: 400px;
         }
       }
       .chatbot-window.open {
@@ -159,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
         flex-direction: column;
         gap: 10px;
         margin-top: 0px;
+        -webkit-overflow-scrolling: touch;
       }
       .message {
         max-width: 80%;
@@ -380,11 +383,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let isOpen = false;
     const CHAT_HISTORY_KEY = "chatbotHistory";
     let isUserScrolledUp = false;
+    let isTyping = false;
 
     function typeMessage(element, text, callback) {
       let charIndex = 0;
       element.innerHTML = '<span></span>';
       const spanElement = element.firstChild;
+      isTyping = true;
 
       function typeText() {
         if (charIndex < text.length) {
@@ -397,9 +402,13 @@ document.addEventListener('DOMContentLoaded', () => {
           }
           charIndex++;
           const typingSpeed = Math.floor(Math.random() * 20) + 20;
+          if (!isUserScrolledUp && isTyping) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }
           setTimeout(typeText, typingSpeed);
         } else {
           finalizeMessage(spanElement);
+          isTyping = false;
           if (callback) callback();
           if (!isUserScrolledUp) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -476,7 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
       message.appendChild(timestamp);
       messagesContainer.appendChild(message);
 
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      if (!animate) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
 
       if (sender === "bot" && animate) {
         messageText.innerHTML = "";
@@ -583,14 +594,18 @@ document.addEventListener('DOMContentLoaded', () => {
       if (inputField) inputField.focus();
     }
 
+    function preventBackgroundScroll(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
     messagesContainer.addEventListener('scroll', () => {
-      const isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop === messagesContainer.clientHeight;
+      const isAtBottom = Math.abs(messagesContainer.scrollHeight - messagesContainer.scrollTop - messagesContainer.clientHeight) < 1;
       isUserScrolledUp = !isAtBottom;
     });
 
-    messagesContainer.addEventListener('wheel', (e) => {
-      e.stopPropagation();
-    });
+    messagesContainer.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    messagesContainer.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
 
     toggleButton.addEventListener("click", () => {
       isOpen = !isOpen;
