@@ -373,9 +373,24 @@ document.addEventListener('DOMContentLoaded', () => {
   let isOpen = false;
   const CHAT_HISTORY_KEY = "chatbotHistory";
 
+  // Load DOMPurify for sanitization
+  const purifyScript = document.createElement("script");
+  purifyScript.src = "https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js";
+  purifyScript.onerror = () => {
+    console.error("Error loading DOMPurify. Sanitization will be skipped.");
+  };
+  document.head.appendChild(purifyScript);
+
   const markedScript = document.createElement("script");
   markedScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
   markedScript.onload = () => {
+    // Configure marked for GitHub-flavored markdown and better rendering
+    marked.setOptions({
+      gfm: true, // Enable GitHub-flavored markdown
+      breaks: true, // Treat newlines as line breaks
+      sanitize: false, // We'll handle sanitization separately
+    });
+
     function typeMessage(element, text, callback) {
       const tempContainer = document.createElement('div');
       tempContainer.innerHTML = text;
@@ -593,8 +608,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (botResponseMarkdown) {
           // Preprocess the response to convert "•" to "*" for proper Markdown list rendering
           botResponseMarkdown = botResponseMarkdown.replace(/•/g, '*');
-          const botResponseHTML = marked.parse(botResponseMarkdown);
-          addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
+
+          try {
+            // Parse markdown to HTML
+            let botResponseHTML = marked.parse(botResponseMarkdown);
+
+            // Sanitize the HTML to prevent XSS attacks
+            if (typeof DOMPurify !== 'undefined') {
+              botResponseHTML = DOMPurify.sanitize(botResponseHTML);
+            } else {
+              console.warn('DOMPurify not loaded; skipping sanitization. Consider adding DOMPurify for security.');
+            }
+
+            addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
+          } catch (error) {
+            console.error('Markdown parsing error:', error);
+            addMessage('Sorry, there was an issue formatting the response.', 'bot');
+          }
         } else {
           addMessage("Sorry, I didn't get a response.", "bot");
         }
