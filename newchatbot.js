@@ -609,11 +609,8 @@ document.addEventListener('DOMContentLoaded', () => {
           // Log the raw response for debugging
           console.log("Raw API Response:", botResponseMarkdown);
 
-          // Preprocess the response to convert various bullet point characters to "*" for proper Markdown list rendering
-          botResponseMarkdown = botResponseMarkdown.replace(/[\u2022\u2023\u25E6\u2043\u2219\u00B7\u25CF\u25CB\u25C9\u2027]/g, '*');
-          
-          // Normalize whitespace around bullet points to ensure proper markdown syntax
-          botResponseMarkdown = botResponseMarkdown.replace(/\*\s+/g, '* ');
+          // Normalize numbered list syntax: ensure consistent spacing after the number and dot
+          botResponseMarkdown = botResponseMarkdown.replace(/(\d+)\.\s*/g, '$1. ');
 
           // Log the processed response for debugging
           console.log("Processed Markdown Response:", botResponseMarkdown);
@@ -621,6 +618,9 @@ document.addEventListener('DOMContentLoaded', () => {
           try {
             // Parse markdown to HTML
             let botResponseHTML = marked.parse(botResponseMarkdown);
+
+            // Log the HTML output for debugging
+            console.log("Parsed HTML:", botResponseHTML);
 
             // Sanitize the HTML to prevent XSS attacks
             if (typeof DOMPurify !== 'undefined') {
