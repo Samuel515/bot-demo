@@ -373,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isOpen = false;
   const CHAT_HISTORY_KEY = "chatbotHistory";
 
-  // Load DOMPurify for sanitization
+  // Load DOMPurify for sanitization (not needed since we're not parsing HTML anymore, but keeping for user input)
   const purifyScript = document.createElement("script");
   purifyScript.src = "https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js";
   purifyScript.onerror = () => {
@@ -381,121 +381,35 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   document.head.appendChild(purifyScript);
 
+  // We don't need marked.js anymore since we're not parsing markdown to HTML
+  // But we'll keep the script load in case it's needed for future features
   const markedScript = document.createElement("script");
   markedScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
   markedScript.onload = () => {
-    // Configure marked for GitHub-flavored markdown and better rendering
-    marked.setOptions({
-      gfm: true, // Enable GitHub-flavored markdown
-      breaks: true, // Treat newlines as line breaks
-      sanitize: false, // We'll handle sanitization separately
-    });
-
-    // Function to preprocess HTML and flatten numbered lists
-    function preprocessHTML(html) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      const result = [];
-      let listCounter = 0;
-
-      function processNode(node) {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          if (node.tagName === 'OL') {
-            listCounter = node.start || 1; // Respect the 'start' attribute if present
-            Array.from(node.childNodes).forEach(child => processNode(child));
-            listCounter = 0; // Reset counter after the list
-          } else if (node.tagName === 'LI') {
-            const textContent = node.textContent.trim();
-            if (textContent) {
-              result.push(`<p>${listCounter}. ${textContent}</p>`);
-              listCounter++;
-            }
-            // Skip child nodes since we've already captured the text
-          } else {
-            // Preserve other tags like <p>
-            const childResults = [];
-            Array.from(node.childNodes).forEach(child => {
-              processNode(child);
-              childResults.push(result.pop() || '');
-            });
-            const innerContent = childResults.join('');
-            if (node.tagName === 'P') {
-              result.push(`<p>${innerContent}</p>`);
-            } else {
-              result.push(innerContent);
-            }
-          }
-        } else if (node.nodeType === Node.TEXT_NODE) {
-          const text = node.textContent.trim();
-          if (text) {
-            result.push(text);
-          }
-        }
-      }
-
-      Array.from(doc.body.childNodes).forEach(node => processNode(node));
-      return result.join('');
-    }
-
     function typeMessage(element, text, callback) {
-      // Parse the initial HTML to a DOM structure
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(text, 'text/html');
-      const nodes = Array.from(doc.body.childNodes);
+      let charIndex = 0;
 
-      let currentNodeIndex = 0;
+      // Start with an empty <span> tag
+      element.innerHTML = '<span></span>';
+      const spanElement = element.firstChild;
 
-      function typeNextNode() {
-        if (currentNodeIndex >= nodes.length) {
+      function typeText() {
+        if (charIndex < text.length) {
+          // Replace newlines with <br> for proper rendering
+          if (text.charAt(charIndex) === '\n') {
+            spanElement.innerHTML += '<br>';
+          } else {
+            spanElement.textContent += text.charAt(charIndex);
+          }
+          charIndex++;
+          const typingSpeed = Math.floor(Math.random() * 20) + 20;
+          setTimeout(typeText, typingSpeed);
+        } else {
           if (callback) callback();
           console.log("Final Rendered HTML:", element.innerHTML);
-          return;
-        }
-
-        const currentNode = nodes[currentNodeIndex];
-        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.tagName === 'P') {
-          const textContent = currentNode.textContent;
-          let charIndex = 0;
-
-          // Start with an empty <p> tag
-          element.innerHTML += '<p></p>';
-          const pElement = element.lastChild;
-
-          function typeText() {
-            if (charIndex < textContent.length) {
-              pElement.textContent += textContent.charAt(charIndex);
-              charIndex++;
-              const typingSpeed = Math.floor(Math.random() * 20) + 20;
-              setTimeout(typeText, typingSpeed);
-            } else {
-              currentNodeIndex++;
-              setTimeout(typeNextNode, 0);
-            }
-          }
-          typeText();
-        } else if (currentNode.nodeType === Node.TEXT_NODE) {
-          const textContent = currentNode.textContent;
-          let charIndex = 0;
-
-          function typeText() {
-            if (charIndex < textContent.length) {
-              element.innerHTML += textContent.charAt(charIndex);
-              charIndex++;
-              const typingSpeed = Math.floor(Math.random() * 20) + 20;
-              setTimeout(typeText, typingSpeed);
-            } else {
-              currentNodeIndex++;
-              setTimeout(typeNextNode, 0);
-            }
-          }
-          typeText();
-        } else {
-          currentNodeIndex++;
-          setTimeout(typeNextNode, 0);
         }
       }
-
-      typeNextNode();
+      typeText();
     }
 
     function loadChatHistory() {
@@ -549,12 +463,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (sender === "bot" && animate) {
         messageText.innerHTML = "";
-        const processedText = preprocessHTML(text);
-        typeMessage(messageText, processedText, () => {
+        typeMessage(messageText, text, () => {
           updateChatHistory(text, sender);
         });
       } else {
-        messageText.innerHTML = text;
+        messageText.innerHTML = text.replace(/\n/g, '<br>');
         updateChatHistory(text, sender);
       }
 
@@ -589,7 +502,13 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = input.value.trim();
       if (!text) return;
 
-      addMessage(text, "user");
+      // Sanitize user input
+      let sanitizedText = text;
+      if (typeof DOMPurify !== 'undefined') {
+        sanitizedText = DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
+      }
+
+      addMessage(sanitizedText, "user");
       input.value = "";
 
       const typingIndicator = showTypingIndicator();
@@ -612,7 +531,7 @@ document.addEventListener('DOMContentLoaded', () => {
               "x-api-key": xApiKey,
             },
             body: JSON.stringify({
-              query: text,
+              query: sanitizedText,
               llm_provider: llmProvider,
             }),
           }
@@ -625,46 +544,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         typingIndicator.remove();
 
-        let botResponseMarkdown;
+        let botResponse;
 
         if (data && data.message) {
-          botResponseMarkdown = data.message;
+          botResponse = data.message;
         } else if (data && data.response && data.response.response) {
-          botResponseMarkdown = data.response.response;
+          botResponse = data.response.response;
         } else {
           addMessage("Sorry, I didn't get a response. Please check your internet connection and try again.", "bot");
           return;
         }
 
-        if (botResponseMarkdown) {
+        if (botResponse) {
           // Log the raw response for debugging
-          console.log("Raw API Response:", botResponseMarkdown);
+          console.log("Raw API Response:", botResponse);
 
-          // Normalize numbered list syntax: ensure consistent spacing after the number and dot
-          botResponseMarkdown = botResponseMarkdown.replace(/(\d+)\.\s*/g, '$1. ');
-
-          // Log the processed response for debugging
-          console.log("Processed Markdown Response:", botResponseMarkdown);
-
-          try {
-            // Parse markdown to HTML
-            let botResponseHTML = marked.parse(botResponseMarkdown);
-
-            // Log the HTML output for debugging
-            console.log("Parsed HTML:", botResponseHTML);
-
-            // Sanitize the HTML to prevent XSS attacks
-            if (typeof DOMPurify !== 'undefined') {
-              botResponseHTML = DOMPurify.sanitize(botResponseHTML);
-            } else {
-              console.warn('DOMPurify not loaded; skipping sanitization. Consider adding DOMPurify for security.');
-            }
-
-            addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
-          } catch (error) {
-            console.error('Markdown parsing error:', error);
-            addMessage('Sorry, there was an issue formatting the response.', 'bot');
-          }
+          // Use the raw response directly as plain text
+          addMessage(botResponse, "bot", true); // Pass true to enable animation
         } else {
           addMessage("Sorry, I didn't get a response.", "bot");
         }
