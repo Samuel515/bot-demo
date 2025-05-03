@@ -422,19 +422,18 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeNextNode, 0);
           }
         } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
-          // Handle block elements like <ol> by adding them directly
-          if (currentNode.tagName === 'OL' || currentNode.tagName === 'UL') {
-            element.innerHTML += currentNode.outerHTML;
-            currentNodeIndex++;
-            currentNode = nodes[currentNodeIndex];
-            setTimeout(typeNextNode, 0);
-          } else {
-            // For other tags, process children or add the tag directly
-            element.innerHTML += currentNode.outerHTML;
-            currentNodeIndex++;
-            currentNode = nodes[currentNodeIndex];
-            setTimeout(typeNextNode, 0);
+          // Add the opening tag
+          element.innerHTML += currentNode.outerHTML.match(/<[^>]+>/)[0];
+          console.log("Adding opening tag:", currentNode.outerHTML.match(/<[^>]+>/)[0]);
+
+          // Move to the next node (children or next sibling)
+          const childNodes = Array.from(currentNode.childNodes);
+          if (childNodes.length > 0) {
+            nodes.splice(currentNodeIndex + 1, 0, ...childNodes);
           }
+          currentNodeIndex++;
+          currentNode = nodes[currentNodeIndex];
+          setTimeout(typeNextNode, 0);
         }
       }
 
