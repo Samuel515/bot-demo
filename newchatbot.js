@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     botName: "AI Assistant",
     themeColor: "#5a5a5a",
     botAvatar:
-      "data:image/svg+xml,%3Csvg width%3D%2240%22 height%3D%2240%22 viewBox%3D%220 0 32 32%22 fill%3D%22none%22 xmlns%3D%22http://www.w3.org/2000/svg%22%3E%0A%3Cpath d%3D%22M25.3327 21.3334V18.6667C25.3327 14.8955 25.3327 13.0099 24.1611 11.8383C22.9895 10.6667 21.1039 10.6667 17.3327 10.6667H14.666C10.8948 10.6667 9.00916 10.6667 7.83759 11.8383C6.66602 13.0099 6.66602 14.8955 6.66602 18.6667V21.3334C6.66602 25.1046 6.66602 26.9902 7.83759 28.1618C9.00916 29.3334 10.8948 29.3334 14.666 29.3334H17.3327C21.1039 29.3334 22.9895 29.3334 24.1611 28.1618C25.3327 26.9902 25.3327 25.1046 25.3327 21.3334Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M25.334 24C27.2196 24 28.1624 24 28.7483 23.4143C29.334 22.8284 29.334 21.8856 29.334 20C29.334 18.1144 29.334 17.1716 28.7483 16.5857C28.1624 16 27.2196 16 25.334 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M6.66602 24C4.7804 24 3.83759 24 3.2518 23.4143C2.66602 22.8284 2.66602 21.8856 2.66602 20C2.66602 18.1144 2.66602 17.1716 3.2518 16.5857C3.83759 16 4.7804 16 6.66602 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M18 4.66675C18 5.77132 17.1045 6.66675 16 6.66675C14.8955 6.66675 14 5.77132 14 4.66675C14 3.56217 14.8955 2.66675 16 2.66675C17.1045 2.66675 18 3.56217 18 4.66675Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22%2F%3E%0A%3Cpath d%3D%22M16 6.66675V10.6667%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M12 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M20 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M13.334 23.3333C13.334 23.3333 14.2229 23.9999 16.0007 23.9999C17.7784 23.9999 18.6673 23.3333 18.6673 23.3333%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E",
+      "data:image/svg+xml,%3Csvg width%3D%2240%22 height%3D%2240%22 viewBox%3D%220 0 32 32%22 fill%3D%22none%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath d%3D%22M25.3327 21.3334V18.6667C25.3327 14.8955 25.3327 13.0099 24.1611 11.8383C22.9895 10.6667 21.1039 10.6667 17.3327 10.6667H14.666C10.8948 10.6667 9.00916 10.6667 7.83759 11.8383C6.66602 13.0099 6.66602 14.8955 6.66602 18.6667V21.3334C6.66602 25.1046 6.66602 26.9902 7.83759 28.1618C9.00916 29.3334 10.8948 29.3334 14.666 29.3334H17.3327C21.1039 29.3334 22.9895 29.3334 24.1611 28.1618C25.3327 26.9902 25.3327 25.1046 25.3327 21.3334Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M25.334 24C27.2196 24 28.1624 24 28.7483 23.4143C29.334 22.8284 29.334 21.8856 29.334 20C29.334 18.1144 29.334 17.1716 28.7483 16.5857C28.1624 16 27.2196 16 25.334 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M6.66602 24C4.7804 24 3.83759 24 3.2518 23.4143C2.66602 22.8284 2.66602 21.8856 2.66602 20C2.66602 18.1144 2.66602 17.1716 3.2518 16.5857C3.83759 16 4.7804 16 6.66602 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M18 4.66675C18 5.77132 17.1045 6.66675 16 6.66675C14.8955 6.66675 14 5.77132 14 4.66675C14 3.56217 14.8955 2.66675 16 2.66675C17.1045 2.66675 18 3.56217 18 4.66675Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22%2F%3E%0A%3Cpath d%3D%22M16 6.66675V10.6667%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M12 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M20 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M13.334 23.3333C13.334 23.3333 14.2229 23.9999 16.0007 23.9999C17.7784 23.9999 18.6673 23.3333 18.6673 23.3333%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E",
     welcomeMessage: "Hi, how can I help you today?",
   };
 
@@ -373,43 +373,83 @@ document.addEventListener('DOMContentLoaded', () => {
   let isOpen = false;
   const CHAT_HISTORY_KEY = "chatbotHistory";
 
-  // Load DOMPurify for sanitization (not needed since we're not parsing HTML anymore, but keeping for user input)
-  const purifyScript = document.createElement("script");
-  purifyScript.src = "https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js";
-  purifyScript.onerror = () => {
-    console.error("Error loading DOMPurify. Sanitization will be skipped.");
-  };
-  document.head.appendChild(purifyScript);
-
-  // We don't need marked.js anymore since we're not parsing markdown to HTML
-  // But we'll keep the script load in case it's needed for future features
   const markedScript = document.createElement("script");
   markedScript.src = "https://cdn.jsdelivr.net/npm/marked/marked.min.js";
   markedScript.onload = () => {
     function typeMessage(element, text, callback) {
-      let charIndex = 0;
-
-      // Start with an empty <span> tag
-      element.innerHTML = '<span></span>';
-      const spanElement = element.firstChild;
-
-      function typeText() {
-        if (charIndex < text.length) {
-          // Replace newlines with <br> for proper rendering
-          if (text.charAt(charIndex) === '\n') {
-            spanElement.innerHTML += '<br>';
-          } else {
-            spanElement.textContent += text.charAt(charIndex);
-          }
-          charIndex++;
-          const typingSpeed = Math.floor(Math.random() * 20) + 20;
-          setTimeout(typeText, typingSpeed);
-        } else {
+      const tempContainer = document.createElement('div');
+      tempContainer.innerHTML = text;
+      
+      const contentParts = extractContentParts(tempContainer);
+      
+      let currentPartIndex = 0;
+      let currentCharIndex = 0;
+      let activePart = contentParts[currentPartIndex];
+      
+      function typeNextPart() {
+        if (currentPartIndex >= contentParts.length) {
           if (callback) callback();
-          console.log("Final Rendered HTML:", element.innerHTML);
+          return;
+        }
+        
+        const part = contentParts[currentPartIndex];
+        
+        if (part.type === 'tag') {
+          element.innerHTML = element.innerHTML + part.content;
+          currentPartIndex++;
+          
+          setTimeout(typeNextPart, 0);
+        } else if (part.type === 'text') {
+          if (currentCharIndex < part.content.length) {
+            element.innerHTML = element.innerHTML + part.content.charAt(currentCharIndex);
+            currentCharIndex++;
+            
+            const typingSpeed = Math.floor(Math.random() * 20) + 20;
+            setTimeout(typeNextPart, typingSpeed);
+          } else {
+            currentPartIndex++;
+            currentCharIndex = 0;
+            setTimeout(typeNextPart, 0);
+          }
         }
       }
-      typeText();
+
+      typeNextPart();
+    }
+    
+    function extractContentParts(element) {
+      const parts = [];
+      
+      function processNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+          if (node.textContent.trim() !== '') {
+            parts.push({
+              type: 'text',
+              content: node.textContent
+            });
+          }
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const outerHTML = node.outerHTML;
+          const innerHTML = node.innerHTML;
+          
+          const openingTag = outerHTML.substring(0, outerHTML.indexOf(innerHTML));
+          parts.push({
+            type: 'tag',
+            content: openingTag
+          });
+          
+          Array.from(node.childNodes).forEach(processNode);
+          
+          const closingTag = outerHTML.substring(outerHTML.indexOf(innerHTML) + innerHTML.length);
+          parts.push({
+            type: 'tag',
+            content: closingTag
+          });
+        }
+      }
+      
+      Array.from(element.childNodes).forEach(processNode);
+      return parts;
     }
 
     function loadChatHistory() {
@@ -463,11 +503,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (sender === "bot" && animate) {
         messageText.innerHTML = "";
+        
         typeMessage(messageText, text, () => {
           updateChatHistory(text, sender);
         });
       } else {
-        messageText.innerHTML = text.replace(/\n/g, '<br>');
+        messageText.innerHTML = text;
         updateChatHistory(text, sender);
       }
 
@@ -502,13 +543,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const text = input.value.trim();
       if (!text) return;
 
-      // Sanitize user input
-      let sanitizedText = text;
-      if (typeof DOMPurify !== 'undefined') {
-        sanitizedText = DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
-      }
-
-      addMessage(sanitizedText, "user");
+      addMessage(text, "user");
       input.value = "";
 
       const typingIndicator = showTypingIndicator();
@@ -531,7 +566,7 @@ document.addEventListener('DOMContentLoaded', () => {
               "x-api-key": xApiKey,
             },
             body: JSON.stringify({
-              query: sanitizedText,
+              query: text,
               llm_provider: llmProvider,
             }),
           }
@@ -544,23 +579,20 @@ document.addEventListener('DOMContentLoaded', () => {
         const data = await response.json();
         typingIndicator.remove();
 
-        let botResponse;
+        let botResponseMarkdown;
 
         if (data && data.message) {
-          botResponse = data.message;
+          botResponseMarkdown = data.message;
         } else if (data && data.response && data.response.response) {
-          botResponse = data.response.response;
+          botResponseMarkdown = data.response.response;
         } else {
           addMessage("Sorry, I didn't get a response. Please check your internet connection and try again.", "bot");
           return;
         }
 
-        if (botResponse) {
-          // Log the raw response for debugging
-          console.log("Raw API Response:", botResponse);
-
-          // Use the raw response directly as plain text
-          addMessage(botResponse, "bot", true); // Pass true to enable animation
+        if (botResponseMarkdown) {
+          const botResponseHTML = marked.parse(botResponseMarkdown);
+          addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
         } else {
           addMessage("Sorry, I didn't get a response.", "bot");
         }
