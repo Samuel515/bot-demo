@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     botName: "AI Assistant",
     themeColor: "#5a5a5a",
     botAvatar:
-      "data:image/svg+xml,%3Csvg width%3D%2240%22 height%3D%2240%22 viewBox%3D%220 0 32 32%22 fill%3D%22none%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Cpath d%3D%22M25.3327 21.3334V18.6667C25.3327 14.8955 25.3327 13.0099 24.1611 11.8383C22.9895 10.6667 21.1039 10.6667 17.3327 10.6667H14.666C10.8948 10.6667 9.00916 10.6667 7.83759 11.8383C6.66602 13.0099 6.66602 14.8955 6.66602 18.6667V21.3334C6.66602 25.1046 6.66602 26.9902 7.83759 28.1618C9.00916 29.3334 10.8948 29.3334 14.666 29.3334H17.3327C21.1039 29.3334 22.9895 29.3334 24.1611 28.1618C25.3327 26.9902 25.3327 25.1046 25.3327 21.3334Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M25.334 24C27.2196 24 28.1624 24 28.7483 23.4143C29.334 22.8284 29.334 21.8856 29.334 20C29.334 18.1144 29.334 17.1716 28.7483 16.5857C28.1624 16 27.2196 16 25.334 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M6.66602 24C4.7804 24 3.83759 24 3.2518 23.4143C2.66602 22.8284 2.66602 21.8856 2.66602 20C2.66602 18.1144 2.66602 17.1716 3.2518 16.5857C3.83759 16 4.7804 16 6.66602 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M18 4.66675C18 5.77132 17.1045 6.66675 16 6.66675C14.8955 6.66675 14 5.77132 14 4.66675C14 3.56217 14.8955 2.66675 16 2.66675C17.1045 2.66675 18 3.56217 18 4.66675Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22%2F%3E%0A%3Cpath d%3D%22M16 6.66675V10.6667%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M12 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M20 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M13.334 23.3333C13.334 23.3333 14.2229 23.9999 16.0007 23.9999C17.7784 23.9999 18.6673 23.3333 18.6673 23.3333%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E",
+      "data:image/svg+xml,%3Csvg width%3D%2240%22 height%3D%2240%22 viewBox%3D%220 0 32 32%22 fill%3D%22none%22 xmlns%3D%22http://www.w3.org/2000/svg%22%3E%0A%3Cpath d%3D%22M25.3327 21.3334V18.6667C25.3327 14.8955 25.3327 13.0099 24.1611 11.8383C22.9895 10.6667 21.1039 10.6667 17.3327 10.6667H14.666C10.8948 10.6667 9.00916 10.6667 7.83759 11.8383C6.66602 13.0099 6.66602 14.8955 6.66602 18.6667V21.3334C6.66602 25.1046 6.66602 26.9902 7.83759 28.1618C9.00916 29.3334 10.8948 29.3334 14.666 29.3334H17.3327C21.1039 29.3334 22.9895 29.3334 24.1611 28.1618C25.3327 26.9902 25.3327 25.1046 25.3327 21.3334Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M25.334 24C27.2196 24 28.1624 24 28.7483 23.4143C29.334 22.8284 29.334 21.8856 29.334 20C29.334 18.1144 29.334 17.1716 28.7483 16.5857C28.1624 16 27.2196 16 25.334 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M6.66602 24C4.7804 24 3.83759 24 3.2518 23.4143C2.66602 22.8284 2.66602 21.8856 2.66602 20C2.66602 18.1144 2.66602 17.1716 3.2518 16.5857C3.83759 16 4.7804 16 6.66602 16%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M18 4.66675C18 5.77132 17.1045 6.66675 16 6.66675C14.8955 6.66675 14 5.77132 14 4.66675C14 3.56217 14.8955 2.66675 16 2.66675C17.1045 2.66675 18 3.56217 18 4.66675Z%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22%2F%3E%0A%3Cpath d%3D%22M16 6.66675V10.6667%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M12 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M20 17.3333V18.6666%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22 stroke-linejoin%3D%22round%22%2F%3E%0A%3Cpath d%3D%22M13.334 23.3333C13.334 23.3333 14.2229 23.9999 16.0007 23.9999C17.7784 23.9999 18.6673 23.3333 18.6673 23.3333%22 stroke%3D%22%23292929%22 stroke-width%3D%221.5%22 stroke-linecap%3D%22round%22%2F%3E%0A%3C%2Fsvg%3E",
     welcomeMessage: "Hi, how can I help you today?",
   };
 
@@ -392,44 +392,53 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function typeMessage(element, text, callback) {
-      const tempContainer = document.createElement('div');
-      tempContainer.innerHTML = text;
-      
-      const contentParts = extractContentParts(tempContainer);
-      
-      let currentPartIndex = 0;
+      // Parse the initial HTML to a DOM structure
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(text, 'text/html');
+      const nodes = Array.from(doc.body.childNodes);
+
+      let currentNodeIndex = 0;
       let currentCharIndex = 0;
-      let activePart = contentParts[currentPartIndex];
-      
-      function typeNextPart() {
-        if (currentPartIndex >= contentParts.length) {
+      let currentNode = nodes[currentNodeIndex];
+
+      function typeNextNode() {
+        if (currentNodeIndex >= nodes.length) {
           if (callback) callback();
+          console.log("Final Rendered HTML:", element.innerHTML); // Debug final HTML
           return;
         }
-        
-        const part = contentParts[currentPartIndex];
-        
-        if (part.type === 'tag') {
-          element.innerHTML = element.innerHTML + part.content;
-          currentPartIndex++;
-          
-          setTimeout(typeNextPart, 0);
-        } else if (part.type === 'text') {
-          if (currentCharIndex < part.content.length) {
-            element.innerHTML = element.innerHTML + part.content.charAt(currentCharIndex);
+
+        if (currentNode.nodeType === Node.TEXT_NODE) {
+          if (currentCharIndex < currentNode.textContent.length) {
+            element.innerHTML += currentNode.textContent.charAt(currentCharIndex);
             currentCharIndex++;
-            
+
             const typingSpeed = Math.floor(Math.random() * 20) + 20;
-            setTimeout(typeNextPart, typingSpeed);
+            setTimeout(typeNextNode, typingSpeed);
           } else {
-            currentPartIndex++;
+            currentNodeIndex++;
             currentCharIndex = 0;
-            setTimeout(typeNextPart, 0);
+            currentNode = nodes[currentNodeIndex];
+            setTimeout(typeNextNode, 0);
+          }
+        } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
+          // Handle block elements like <ol> by adding them directly
+          if (currentNode.tagName === 'OL' || currentNode.tagName === 'UL') {
+            element.innerHTML += currentNode.outerHTML;
+            currentNodeIndex++;
+            currentNode = nodes[currentNodeIndex];
+            setTimeout(typeNextNode, 0);
+          } else {
+            // For other tags, process children or add the tag directly
+            element.innerHTML += currentNode.outerHTML;
+            currentNodeIndex++;
+            currentNode = nodes[currentNodeIndex];
+            setTimeout(typeNextNode, 0);
           }
         }
       }
 
-      typeNextPart();
+      typeNextNode();
     }
     
     function extractContentParts(element) {
