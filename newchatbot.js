@@ -391,107 +391,107 @@ document.addEventListener('DOMContentLoaded', () => {
       sanitize: false, // We'll handle sanitization separately
     });
 
+    // Function to preprocess HTML and flatten numbered lists
+    function preprocessHTML(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const result = [];
+      let listCounter = 0;
+
+      function processNode(node) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          if (node.tagName === 'OL') {
+            listCounter = node.start || 1; // Respect the 'start' attribute if present
+            Array.from(node.childNodes).forEach(child => processNode(child));
+            listCounter = 0; // Reset counter after the list
+          } else if (node.tagName === 'LI') {
+            const textContent = node.textContent.trim();
+            if (textContent) {
+              result.push(`<p>${listCounter}. ${textContent}</p>`);
+              listCounter++;
+            }
+            // Skip child nodes since we've already captured the text
+          } else {
+            // Preserve other tags like <p>
+            const childResults = [];
+            Array.from(node.childNodes).forEach(child => {
+              processNode(child);
+              childResults.push(result.pop() || '');
+            });
+            const innerContent = childResults.join('');
+            if (node.tagName === 'P') {
+              result.push(`<p>${innerContent}</p>`);
+            } else {
+              result.push(innerContent);
+            }
+          }
+        } else if (node.nodeType === Node.TEXT_NODE) {
+          const text = node.textContent.trim();
+          if (text) {
+            result.push(text);
+          }
+        }
+      }
+
+      Array.from(doc.body.childNodes).forEach(node => processNode(node));
+      return result.join('');
+    }
+
     function typeMessage(element, text, callback) {
       // Parse the initial HTML to a DOM structure
       const parser = new DOMParser();
       const doc = parser.parseFromString(text, 'text/html');
       const nodes = Array.from(doc.body.childNodes);
 
-      // Stack to keep track of open tags and their state
-      const tagStack = [];
       let currentNodeIndex = 0;
       let currentCharIndex = 0;
-      let currentNode = nodes[currentNodeIndex];
 
       function typeNextNode() {
         if (currentNodeIndex >= nodes.length) {
-          // Close any remaining open tags
-          while (tagStack.length > 0) {
-            const tag = tagStack.pop();
-            element.innerHTML += `</${tag.toLowerCase()}>`;
-          }
           if (callback) callback();
-          console.log("Final Rendered HTML:", element.innerHTML); // Debug final HTML
+          console.log("Final Rendered HTML:", element.innerHTML);
           return;
         }
 
-        if (currentNode.nodeType === Node.TEXT_NODE) {
-          if (currentCharIndex < currentNode.textContent.length) {
-            element.innerHTML += currentNode.textContent.charAt(currentCharIndex);
-            currentCharIndex++;
+        const currentNode = nodes[currentNodeIndex];
+        if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.tagName === 'P') {
+          // Add the opening <p> tag
+          element.innerHTML += '<p>';
+          const textContent = currentNode.textContent;
+          let charIndex = 0;
 
+          function typeText() {
+            if (charIndex < textContent.length) {
+              element.innerHTML = element.innerHTML.slice(0, -4) + textContent.charAt(charIndex) + '<p>';
+              charIndex++;
+              const typingSpeed = Math.floor(Math.random() * 20) + 20;
+              setTimeout(typeText, typingSpeed);
+            } else {
+              element.innerHTML = element.innerHTML.slice(0, -4) + '</p>';
+              currentNodeIndex++;
+              setTimeout(typeNextNode, 0);
+            }
+          }
+          typeText();
+        } else if (currentNode.nodeType === Node.TEXT_NODE) {
+          const textContent = currentNode.textContent;
+          if (currentCharIndex < textContent.length) {
+            element.innerHTML += textContent.charAt(currentCharIndex);
+            currentCharIndex++;
             const typingSpeed = Math.floor(Math.random() * 20) + 20;
             setTimeout(typeNextNode, typingSpeed);
           } else {
             currentNodeIndex++;
             currentCharIndex = 0;
-            currentNode = nodes[currentNodeIndex];
             setTimeout(typeNextNode, 0);
           }
-        } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
-          // Add the opening tag
-          const openingTagMatch = currentNode.outerHTML.match(/<[^>]+>/);
-          if (openingTagMatch) {
-            const openingTag = openingTagMatch[0];
-            element.innerHTML += openingTag;
-            console.log("Adding opening tag:", openingTag);
-
-            // Push the tag name onto the stack
-            tagStack.push(currentNode.tagName);
-
-            // Add child nodes to the processing queue
-            const childNodes = Array.from(currentNode.childNodes);
-            if (childNodes.length > 0) {
-              nodes.splice(currentNodeIndex + 1, 0, ...childNodes);
-            } else {
-              // If no children, close the tag immediately
-              element.innerHTML += `</${currentNode.tagName.toLowerCase()}>`;
-              tagStack.pop();
-            }
-
-            currentNodeIndex++;
-            currentNode = nodes[currentNodeIndex];
-            setTimeout(typeNextNode, 0);
-          }
+        } else {
+          currentNodeIndex++;
+          setTimeout(typeNextNode, 0);
         }
       }
 
       typeNextNode();
-    }
-    
-    function extractContentParts(element) {
-      const parts = [];
-      
-      function processNode(node) {
-        if (node.nodeType === Node.TEXT_NODE) {
-          if (node.textContent.trim() !== '') {
-            parts.push({
-              type: 'text',
-              content: node.textContent
-            });
-          }
-        } else if (node.nodeType === Node.ELEMENT_NODE) {
-          const outerHTML = node.outerHTML;
-          const innerHTML = node.innerHTML;
-          
-          const openingTag = outerHTML.substring(0, outerHTML.indexOf(innerHTML));
-          parts.push({
-            type: 'tag',
-            content: openingTag
-          });
-          
-          Array.from(node.childNodes).forEach(processNode);
-          
-          const closingTag = outerHTML.substring(outerHTML.indexOf(innerHTML) + innerHTML.length);
-          parts.push({
-            type: 'tag',
-            content: closingTag
-          });
-        }
-      }
-      
-      Array.from(element.childNodes).forEach(processNode);
-      return parts;
     }
 
     function loadChatHistory() {
@@ -545,8 +545,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (sender === "bot" && animate) {
         messageText.innerHTML = "";
-        
-        typeMessage(messageText, text, () => {
+        const processedText = preprocessHTML(text);
+        typeMessage(messageText, processedText, () => {
           updateChatHistory(text, sender);
         });
       } else {
