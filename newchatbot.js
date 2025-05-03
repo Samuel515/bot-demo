@@ -606,8 +606,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (botResponseMarkdown) {
-          // Preprocess the response to convert "•" to "*" for proper Markdown list rendering
-          botResponseMarkdown = botResponseMarkdown.replace(/•/g, '*');
+          // Preprocess the response to convert various bullet point characters to "*" for proper Markdown list rendering
+          botResponseMarkdown = botResponseMarkdown.replace(/[\u2022\u2023\u25E6\u2043\u2219]/g, '*');
 
           try {
             // Parse markdown to HTML
