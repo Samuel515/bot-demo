@@ -444,7 +444,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const nodes = Array.from(doc.body.childNodes);
 
       let currentNodeIndex = 0;
-      let currentCharIndex = 0;
 
       function typeNextNode() {
         if (currentNodeIndex >= nodes.length) {
@@ -455,19 +454,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const currentNode = nodes[currentNodeIndex];
         if (currentNode.nodeType === Node.ELEMENT_NODE && currentNode.tagName === 'P') {
-          // Add the opening <p> tag
-          element.innerHTML += '<p>';
           const textContent = currentNode.textContent;
           let charIndex = 0;
 
+          // Start with an empty <p> tag
+          element.innerHTML += '<p></p>';
+          const pElement = element.lastChild;
+
           function typeText() {
             if (charIndex < textContent.length) {
-              element.innerHTML = element.innerHTML.slice(0, -4) + textContent.charAt(charIndex) + '<p>';
+              pElement.textContent += textContent.charAt(charIndex);
               charIndex++;
               const typingSpeed = Math.floor(Math.random() * 20) + 20;
               setTimeout(typeText, typingSpeed);
             } else {
-              element.innerHTML = element.innerHTML.slice(0, -4) + '</p>';
               currentNodeIndex++;
               setTimeout(typeNextNode, 0);
             }
@@ -475,16 +475,20 @@ document.addEventListener('DOMContentLoaded', () => {
           typeText();
         } else if (currentNode.nodeType === Node.TEXT_NODE) {
           const textContent = currentNode.textContent;
-          if (currentCharIndex < textContent.length) {
-            element.innerHTML += textContent.charAt(currentCharIndex);
-            currentCharIndex++;
-            const typingSpeed = Math.floor(Math.random() * 20) + 20;
-            setTimeout(typeNextNode, typingSpeed);
-          } else {
-            currentNodeIndex++;
-            currentCharIndex = 0;
-            setTimeout(typeNextNode, 0);
+          let charIndex = 0;
+
+          function typeText() {
+            if (charIndex < textContent.length) {
+              element.innerHTML += textContent.charAt(charIndex);
+              charIndex++;
+              const typingSpeed = Math.floor(Math.random() * 20) + 20;
+              setTimeout(typeText, typingSpeed);
+            } else {
+              currentNodeIndex++;
+              setTimeout(typeNextNode, 0);
+            }
           }
+          typeText();
         } else {
           currentNodeIndex++;
           setTimeout(typeNextNode, 0);
