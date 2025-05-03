@@ -591,6 +591,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (botResponseMarkdown) {
+          // Preprocess the response to convert "•" to "*" for proper Markdown list rendering
+          botResponseMarkdown = botResponseMarkdown.replace(/•/g, '*');
           const botResponseHTML = marked.parse(botResponseMarkdown);
           addMessage(botResponseHTML, "bot", true); // Pass true to enable animation
         } else {
