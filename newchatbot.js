@@ -401,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
             spanElement.innerHTML += escapedChar;
           }
           charIndex++;
-          const typingSpeed = Math.floor(Math.random() * 20) + 30;
+          const typingSpeed = 20;
           if (!isUserScrolledUp && isTyping) {
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
           }
