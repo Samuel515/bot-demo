@@ -73,7 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
         position: absolute;
         bottom: 70px;
         right: 10px;
-        width: 350px;
+        width: 90%;
+        max-width: 350px;
         height: 500px;
         background: #fff;
         border-radius: 10px;
@@ -86,6 +87,12 @@ document.addEventListener('DOMContentLoaded', () => {
         transform-origin: bottom right;
         transition: all 0.3s ease-in-out;
         pointer-events: none;
+      }
+      @media (min-width: 768px) {
+        .chatbot-window {
+          width: 400px;
+          max-width: 400px;
+        }
       }
       .chatbot-window.open {
         opacity: 1;
@@ -284,9 +291,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       .message.bot .bullet {
         margin-left: 20px;
+        text-indent: -20px;
       }
       .message.bot .sub-bullet {
         margin-left: 40px;
+        text-indent: -20px;
       }
     `;
     document.head.appendChild(style);
@@ -370,6 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let isOpen = false;
     const CHAT_HISTORY_KEY = "chatbotHistory";
+    let isUserScrolledUp = false;
 
     function typeMessage(element, text, callback) {
       let charIndex = 0;
@@ -391,6 +401,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           finalizeMessage(spanElement);
           if (callback) callback();
+          if (!isUserScrolledUp) {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }
         }
       }
 
@@ -569,6 +582,15 @@ document.addEventListener('DOMContentLoaded', () => {
       const inputField = document.getElementById("chatbot-input-field");
       if (inputField) inputField.focus();
     }
+
+    messagesContainer.addEventListener('scroll', () => {
+      const isAtBottom = messagesContainer.scrollHeight - messagesContainer.scrollTop === messagesContainer.clientHeight;
+      isUserScrolledUp = !isAtBottom;
+    });
+
+    messagesContainer.addEventListener('wheel', (e) => {
+      e.stopPropagation();
+    });
 
     toggleButton.addEventListener("click", () => {
       isOpen = !isOpen;
