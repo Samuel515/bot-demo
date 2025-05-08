@@ -546,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const llmProvider = config.llmProvider || "gemini";
         const response = await fetch(
-          `https://api-nexusbotix-v2.vercel.app/api/ai-agent/query-agent2/${scriptId}`,
+          `https://nexusbotix.onrender.com/api/ai-agent/query-agent2/${scriptId}`,
           {
             method: "POST",
             headers: {
