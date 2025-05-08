@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const scriptTag = document.querySelector('script[data-script-id][data-x-api-key]');
     if (!scriptTag) {
-      console.error("Chatbot Error: Script tag not found.");
+      // console.error("Chatbot Error: Script tag not found.");
       return;
     }
 
@@ -573,19 +573,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (data && data.response && data.response.response) {
           botResponse = data.response.response;
         } else {
-          addMessage("Sorry, I didn't get a response. Please check your internet connection and try again.", "bot");
+          addMessage("Sorry, I could not get a response. Please check your internet connection and try again.", "bot");
           return;
         }
 
         if (botResponse) {
           addMessage(botResponse, "bot", true);
         } else {
-          addMessage("Sorry, I didn't get a response.", "bot");
+          addMessage("Oops! I ran into a problem. Could you try that again? If it still doesn't work, our support team is here to help.", "bot");
         }
       } catch (error) {
         console.error("API Error:", error);
         typingIndicator.remove();
-        addMessage(`Sorry, I encountered an error: ${error.message}`, "bot");
+        addMessage(`Oops! I ran into a problem. Could you try that again? If it still doesn't work, our support team is here to help.`, "bot");
       }
     }
 
